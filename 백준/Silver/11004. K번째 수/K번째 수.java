@@ -49,10 +49,8 @@ public class Main {
         for (int i = 0; i < N; i++) {
             A[i] = Integer.parseInt(st.nextToken());
         }
-        int start = 0;
-        int end = N - 1;
 
-        int result = quickSort(start, end, K - 1);
+        int result = quickSort(0, N - 1, K - 1);
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         bw.write(String.valueOf(result));
 
@@ -65,38 +63,44 @@ public class Main {
         // 재귀 탈출
         if (start >= end) return A[start];
 
-        int pivotIndex = findPivot(start, end);
+        int pivotIndex = partition(start, end);
 
-        if (pivotIndex == K) {
+        if (pivotIndex == K) { // K번째 수가 pivot이면 더 이상 구할 필요 없음
             return A[pivotIndex];
-        } else if (pivotIndex > K) {
+        } else if (pivotIndex > K) { // K가 pivot보다 작으면 왼쪽 그룹만 정렬 수행하기
             return quickSort(start, pivotIndex - 1, K);
-        } else {
+        } else { // K가 pivot보다 크면 오른쪽 그룹만 정렬 수행하기
             return quickSort(pivotIndex + 1, end, K);
         }
     }
 
-    private static int findPivot(int start, int end) {
+    private static int partition(int start, int end) {
+        if (start + 1 == end) {
+            if (A[start] > A[end]) {
+                swap(start, end);
+                return end;
+            }
+        }
         int mid = (start + end) / 2;
 
-        swap(start, mid); // 중앙 값과 맨 앞 값 변경
+        swap(start, mid); // 중앙 값을 1번째 요소로 이동하기
 
-        int piovt = A[start];
+        int pivot = A[start];
         int i = start + 1;
         int j = end;
 
         while (i <= j) {
-            while (i <= j && piovt > A[i]) {
+            while (i <= end && pivot > A[i]) { // 피벗보다 큰 수가 나올 때까지 i++
                 i++;
             }
-            while (j >= i && piovt < A[j]) {
+            while (j >= start + 1 && pivot < A[j]) { // 피벗보다 작은 수가 나올 때 까지 j--
                 j--;
             }
             if (i <= j) {
                 swap(i++, j--); // 다음 탐색을 위해 이동
             }
         }
-        swap(start, j);
+        swap(start, j); // j는 피벗보다 작거나 같은 그룹의 마지막 인덱스이므로 피벗과 교체
         return j;
     }
 
