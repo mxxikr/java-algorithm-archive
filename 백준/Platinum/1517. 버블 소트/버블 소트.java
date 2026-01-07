@@ -74,7 +74,7 @@ public class Main {
         while(index1 <= m && index2 <= e){
             if(tmp[index1] > tmp[index2]){
                 A[k] = tmp[index2];
-                result += m - index1 + 1;
+                result = result + index2 - k; // 뒤쪽 데이터 값이 작은 경우 result 업데이트
                 k++;
                 index2++;
             } else {
