@@ -29,11 +29,7 @@ public class Main {
         if (M >= 45) {
             M -= 45;
         } else {
-            if (H == 0) {
-                H = 23;
-            } else {
-                H -= 1;
-            }
+            H = H == 0 ? 23 : H - 1;
             M = M  + 60 - 45;
         }
 
