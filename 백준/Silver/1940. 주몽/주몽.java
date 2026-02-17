@@ -1,32 +1,13 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-/**
- * ==== 의사 코드 ====
- * N(재료의 개수), M(갑옷이 되는 번호) 저장
- *
- * for (N만큼 반복) {
- *     재료 배열 저장하기
- * }
- *
- * 재료 배열 정렬하기
- *
- * while (i < j) { // 둘이 만날 때까지
- *     if(재료 합 < M) 작은 번호 재료를 한 칸 위로 변경
- *     else if (재료 합 > M) 큰 번호 재료를 한 칸 아래로 변경
- *     else 경우의 수 증가, 양쪽 index 각각 변경
- * }
- * count 출력
- */
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        int M = Integer.parseInt(br.readLine());
-        int[] A = new int[N];
+        int N = Integer.parseInt(br.readLine()); // 재료의 개수
+        int M = Integer.parseInt(br.readLine()); // 갑옷을 만드는데 필요한 수
+        int[] A =  new int[N];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
@@ -34,25 +15,23 @@ public class Main {
             A[i] = Integer.parseInt(st.nextToken());
         }
 
-        Arrays.sort(A); // 오름차순 정렬하기
+        Arrays.sort(A); // 정렬
 
-        int count = 0;
-        int i = 0, j = N - 1;
+        int start = 0, end = N - 1, count = 0;
 
-        while (i < j) {
-            if (A[i] + A[j] < M) {
-                i++;
-            } else if (A[i] + A[j] > M) {
-                j--;
-            }
-            else {
-                count++;
-                i++;
-                j--;
+        while (start < end) {
+            int sum = A[start] + A[end];
+
+            if (sum < M) {
+                start++; // 큰 수로 이동
+            } else if (sum > M) {
+                end--; // 작은 수로 이동
+            } else if (sum == M) {
+                count++; // 갑옷 개수 증가
+                start++; // 다음 작은 값으로 이동
+                end--; // 다음 큰 값으로 이동
             }
         }
-
         System.out.println(count);
-        br.close();
     }
 }
